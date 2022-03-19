@@ -36,7 +36,7 @@
 
                 </Label>
                 <Button Margin="0,10,0,0" Text="DODAJ PRZYPOMNIENIE"
-                        Command="{Binding OpenWebCommand}"
+                        Clicked="Button_Clicked"
                         BackgroundColor="{StaticResource Accent}"
                         TextColor="White" />
             </StackLayout>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MedicationReminder.Views.AddReminderPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        
+        <StackLayout>
+            <Label Text="Nazwa leku" FontSize="Medium"/>
+            <Entry FontSize="Medium"/>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox x:Name="checkBox"/>
+                <Label Text="Czy jest to lek immunosupresyjny?" FontSize="Medium"/>
+            </StackLayout>
+            <Label HorizontalTextAlignment="Center" IsVisible="False"
+                Text="W tym wypadku uruchomione zostaną dodatkowe powiadomienia: przypomnienie o byciu na czczo oraz przypomnienie o niespożywaniu posiłków po zażyciu leku" >
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"
+                     Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                     Value="true">
+                        <Setter Property="IsVisible" Value="false" />
+                        <Setter Property="IsVisible" Value="true" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+
+                <Button Text="Dodaj czas przypomnienia"
+                    Command="{Binding AddRemindTimeCommand}">
+                </Button>
+
+                <CollectionView ItemsSource="{Binding RemindTimes}" >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Dawka:" Padding="0,15,10,0" FontSize="Medium"/>
+                                <Entry Text="{Binding Dose}" WidthRequest="30"  FontSize="Medium"/>
+                                <Label Text="tabletka" Padding="0,15,10,0" FontSize="Medium" />
+                                <Label Text="Godzina:" Padding="0,15,10,0" FontSize="Medium"/>
+                                <TimePicker Time="9:0:0"/>
+                            </StackLayout>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button Text="Zapisz"/>
+
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>
