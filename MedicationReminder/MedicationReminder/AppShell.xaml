@@ -84,7 +84,7 @@
     <FlyoutItem Title="Dodaj" Icon="pill.png">
         <ShellContent Route="AddReminderPage" ContentTemplate="{DataTemplate local:AddReminderPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Dzisiaj" Icon="calendar.png">
+    <FlyoutItem Title="Wszystkie" Icon="calendar.png">
         <ShellContent Route="TodayRemaindersPage" ContentTemplate="{DataTemplate local:TodayRemaindersPage}" />
     </FlyoutItem>
 

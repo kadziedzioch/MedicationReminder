@@ -13,6 +13,7 @@ namespace MedicationReminder.ViewModels
         public ObservableCollection<Medicine> Medicines { get; set; }
         public ObservableCollection<RemindTime> RemindTimes { get; set; }
         public Command AddRemindTimeCommand { get; }
+        public Command DeleteCommand { get; }
 
         public AddReminderViewModel()
         {
@@ -20,23 +21,25 @@ namespace MedicationReminder.ViewModels
             Medicines = new ObservableCollection<Medicine>();
             RemindTimes = new ObservableCollection<RemindTime>();
             AddRemindTimeCommand = new Command(AddRemindTime);
+            DeleteCommand = new Command(OnDeleteTapped);
         }
 
-        public void AddRemindTime()
+        private void AddRemindTime()
         {
             RemindTimes.Add(new RemindTime
             {
                 RemindTimeId = Guid.NewGuid().ToString(),
                 Dose = 1,
-                Time = new TimePicker
-                {
-                    Time = new TimeSpan(8,0,0)
-                }
+                Time = new TimeSpan(8,0,0)
             });
 
         }
 
-        
+        private void OnDeleteTapped(object obj)
+        {
+            var content = obj as RemindTime;
+            RemindTimes.Remove(content);
+        }
 
 
 

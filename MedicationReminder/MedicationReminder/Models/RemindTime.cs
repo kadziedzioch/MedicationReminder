@@ -11,9 +11,11 @@ namespace MedicationReminder.Models
 
         public string MedicineId { get; set; }
 
-        public TimePicker Time { get; set; }
+        public TimeSpan Time { get; set; }
 
         public int Dose { get; set; }
+
+        public bool IsSelected { get; set; }
 
     }
 }

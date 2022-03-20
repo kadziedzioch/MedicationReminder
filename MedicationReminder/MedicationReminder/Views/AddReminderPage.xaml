@@ -4,10 +4,9 @@
              x:Class="MedicationReminder.Views.AddReminderPage"
              Title="{Binding Title}">
     <ContentPage.Content>
-        
+
         <StackLayout>
-            <Label Text="Nazwa leku" FontSize="Medium"/>
-            <Entry FontSize="Medium"/>
+            <Entry FontSize="Medium" Placeholder="Nazwa leku"/>
             <StackLayout Orientation="Horizontal">
                 <CheckBox x:Name="checkBox"/>
                 <Label Text="Czy jest to lek immunosupresyjny?" FontSize="Medium"/>
@@ -28,18 +27,45 @@
                     Command="{Binding AddRemindTimeCommand}">
                 </Button>
 
-                <CollectionView ItemsSource="{Binding RemindTimes}" >
+                <CollectionView x:Name="MyList" ItemsSource="{Binding RemindTimes}" >
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
+                        <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Dawka:" Padding="0,15,10,0" FontSize="Medium"/>
                                 <Entry Text="{Binding Dose}" WidthRequest="30"  FontSize="Medium"/>
                                 <Label Text="tabletka" Padding="0,15,10,0" FontSize="Medium" />
                                 <Label Text="Godzina:" Padding="0,15,10,0" FontSize="Medium"/>
-                                <TimePicker Time="9:0:0"/>
+                                <TimePicker Time="{Binding Time}" Margin="0,0,15,0"/>
+                                <Button Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference MyList}}" CommandParameter="{Binding .}" Text="x" BackgroundColor="pink" TextColor="Gray" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="Center" FontSize="Medium"/>
                             </StackLayout>
-
-                        </DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <CheckBox IsVisible="false">
+                                    <CheckBox.Triggers>
+                                        <DataTrigger TargetType="CheckBox"
+                                                     Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                     Value="true">
+                                            <Setter Property="IsVisible" Value="false" />
+                                            <Setter Property="IsVisible" Value="true" />
+                                        </DataTrigger>
+                                    </CheckBox.Triggers>
+                                </CheckBox>
+                                <Label Text="Czy przypominać 2 godziny wcześniej o byciu na czczo?"
+                                       IsVisible="false"
+                                       FontSize="Medium">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"
+                                                     Value="true">
+                                            <Setter Property="IsVisible" Value="false" />
+                                            <Setter Property="IsVisible" Value="true" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                        
+                    </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <Button Text="Zapisz"/>
