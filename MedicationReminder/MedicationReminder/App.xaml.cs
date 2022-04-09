@@ -15,6 +15,8 @@ namespace MedicationReminder
 
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
+            //MainPage = new NavigationPage(new Views.LoginPage());
+
         }
 
         protected override void OnStart()

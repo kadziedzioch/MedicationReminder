@@ -2,13 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodels="clr-namespace:MedicationReminder.ViewModels" x:DataType="viewmodels:LoginViewModel"
              mc:Ignorable="d"
              x:Class="MedicationReminder.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Disabled">
+
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+        
+            
+            <StackLayout Padding="40" VerticalOptions="Center"
+                     HorizontalOptions="FillAndExpand">
+                <StackLayout BackgroundColor="#96d1ff" Margin="0,0,0,20">
+                    <Image Source="logo.png" VerticalOptions="Center"  />
+                </StackLayout>
+                <Label Text="Nazwa użytkownika"/>
+            <Entry x:Name="UserNameEntry" Placeholder="Nazwa" FontSize="Medium" Text="{Binding newUsername, Mode=TwoWay}"/>
+            <Label Text="Hasło"/>
+            <Entry x:Name="PasswordEntry" IsPassword="True" FontSize="Medium" Placeholder="Hasło" Text="{Binding newPassword, Mode=TwoWay}"/>
+            <Button Text="Zaloguj się" FontSize="Medium" Command="{Binding LoginCommand}"/>
+            <Button Text="Zarejestruj się" Clicked="SigUpButtonClicked" FontSize="Medium"/>
+            <Label x:Name="LoginFaild" FontSize="Medium" HorizontalTextAlignment="Center" Text="{Binding newLoginFaild, Mode=TwoWay}"/>
         </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

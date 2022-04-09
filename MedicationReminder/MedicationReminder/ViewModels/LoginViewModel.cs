@@ -1,4 +1,5 @@
-﻿using MedicationReminder.Views;
+﻿using MedicationReminder.Models;
+using MedicationReminder.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,16 +10,52 @@ namespace MedicationReminder.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         public Command LoginCommand { get; }
+        public string newUsername {get; set;}
+        public string newPassword { get; set; }
+        public string newLoginFaild { get; set; }
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(OnLoginClicked);
+            LoginCommand = new Command(Login_Clicked);
         }
 
-        private async void OnLoginClicked(object obj)
+        async void Login_Clicked(object obj)
         {
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
-            await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+
+            var user = new User
+            {
+                Username = newUsername,
+                Password = newPassword
+            };
+
+            var isVaild = AreCredentialsCorrect(user);
+            if (isVaild)
+            {
+                Application.Current.Properties["IsUserLoggedIn"] = true;
+                newUsername = string.Empty;
+                newPassword = string.Empty;
+                newLoginFaild = string.Empty;
+                OnPropertyChanged(nameof(newUsername));
+                OnPropertyChanged(nameof(newPassword));
+                OnPropertyChanged(nameof(newLoginFaild));
+
+                await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+            }
+            else
+            {
+                newLoginFaild = "Nieprawidłowe hasło lub nazwa użytkownika!";
+                newPassword = string.Empty;
+                OnPropertyChanged(nameof(newLoginFaild));
+                OnPropertyChanged(nameof(newPassword));
+            }
+            
         }
+
+        bool AreCredentialsCorrect(User user)
+        {
+            return user.Username == Constants.Username && user.Password == Constants.Password;
+
+        }
+
     }
 }

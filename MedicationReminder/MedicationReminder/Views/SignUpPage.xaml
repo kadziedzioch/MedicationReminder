@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:MedicationReminder.ViewModels" x:DataType="viewmodels:SignUpViewModel"
+             x:Class="MedicationReminder.Views.SignUpPage"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False">
+    
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Center"
+                     HorizontalOptions="FillAndExpand">
+            <Label Text="REJESTRACJA" HorizontalTextAlignment="Center" FontSize="Large" Margin="0,0,0,20"/>
+            <Label Text="Nazwa użytkownika"/>
+            <Entry x:Name="UsernameEntry" Placeholder="Nazwa" FontSize="Medium" Text="{Binding newUsername, Mode=TwoWay}"/>
+            <Label Text="Hasło"/>
+            <Entry x:Name="PasswordEntry" Placeholder="Hasło" IsPassword="True" FontSize="Medium" Text="{Binding newPassword, Mode=TwoWay}"/>
+            <Label Text=" Email"/>
+            <Entry x:Name="EmailEntry" Placeholder="Email" FontSize="Medium" Text="{Binding newEmail, Mode=TwoWay}"/>
+            <Button Text="Zarejestruj" FontSize="Medium" Command="{Binding SignUpCommand}"/>
+            <Button Text="Zaloguj się" Clicked="LoginButtonClicked" FontSize="Medium"/>
+            <Label x:Name="errortext" FontSize="Medium" Text="{Binding newErrorText, Mode=TwoWay}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

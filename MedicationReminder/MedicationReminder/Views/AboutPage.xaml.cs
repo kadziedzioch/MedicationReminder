@@ -16,5 +16,13 @@ namespace MedicationReminder.Views
         {
             await Navigation.PushAsync(new AddReminderPage());
         }
+
+        async void OnLogout_Clicked(object sender, EventArgs e)
+        {
+
+            Application.Current.Properties["IsUserLoggedIn"] = false;
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+
+        }
     }
 }
