@@ -1,8 +1,11 @@
 ﻿using MedicationReminder.Models;
 using MedicationReminder.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MedicationReminder.ViewModels
@@ -28,7 +31,7 @@ namespace MedicationReminder.ViewModels
                 Password = newPassword
             };
 
-            var isVaild = AreCredentialsCorrect(user);
+            var isVaild = await AreCredentialsCorrect(user);
             if (isVaild)
             {
                 Application.Current.Properties["IsUserLoggedIn"] = true;
@@ -51,10 +54,24 @@ namespace MedicationReminder.ViewModels
             
         }
 
-        bool AreCredentialsCorrect(User user)
+        private async Task<bool> AreCredentialsCorrect(User user)
         {
-            return user.Username == Constants.Username && user.Password == Constants.Password;
+            //return user.Username == Constants.Username && user.Password == Constants.Password;
+            HttpClientHandler insecureHandler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            HttpClient client = new HttpClient(insecureHandler);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            var json = JsonConvert.SerializeObject(user);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("http://10.0.2.2:9481/api/account/login", content).ConfigureAwait(false);
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            return true;
         }
 
     }

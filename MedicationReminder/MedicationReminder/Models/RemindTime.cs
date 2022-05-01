@@ -11,6 +11,8 @@ namespace MedicationReminder.Models
 
         public string MedicineId { get; set; }
 
+        public string UserId { get; set; }
+
         public TimeSpan Time { get; set; }
 
         public int Dose { get; set; }

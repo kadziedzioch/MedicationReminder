@@ -9,6 +9,7 @@ namespace MedicationReminder.Models
         public string MedicineId { get; set; }
         public string MedicineName { get; set; }
         public bool IsImmunosuppressive { get; set; }
+        
 
     }
 }
