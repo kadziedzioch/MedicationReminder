@@ -35,6 +35,13 @@ namespace MedicationReminder.ViewModels
             if (isVaild)
             {
                 Application.Current.Properties["IsUserLoggedIn"] = true;
+                if (!Application.Current.Properties.ContainsKey("CurrentUsername"))
+                {
+                    Application.Current.Properties.Add("CurrentUsername", user.Username);
+                }
+                Application.Current.Properties["CurrentUsername"] = user.Username;
+                await Application.Current.SavePropertiesAsync();
+                
                 newUsername = string.Empty;
                 newPassword = string.Empty;
                 newLoginFaild = string.Empty;

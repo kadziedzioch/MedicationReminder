@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MedicationReminder.ViewModels" 
              x:Class="MedicationReminder.Views.AddReminderPage"
              Title="{Binding Title}">
     <ContentPage.Content>
 
         <StackLayout>
-            <Entry FontSize="Medium" Placeholder="Nazwa leku"/>
+            <Entry FontSize="Medium" Placeholder="Nazwa leku" Text="{Binding newMedicineName,Mode=TwoWay}"/>
             <StackLayout Orientation="Horizontal">
-                <CheckBox x:Name="checkBox"/>
+                <CheckBox x:Name="checkBox" IsChecked="{Binding newIsImmunosupressive, Mode=TwoWay}"/>
                 <Label Text="Czy jest to lek immunosupresyjny?" FontSize="Medium"/>
             </StackLayout>
             <Label HorizontalTextAlignment="Center" IsVisible="False"
@@ -27,9 +27,9 @@
                     Command="{Binding AddRemindTimeCommand}">
                 </Button>
 
-                <CollectionView x:Name="MyList" ItemsSource="{Binding RemindTimes}" >
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+            <CollectionView x:Name="MyList" ItemsSource="{Binding RemindTimes}" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
                         <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Dawka:" Padding="0,15,10,0" FontSize="Medium"/>
@@ -68,7 +68,7 @@
                     </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button Text="Zapisz"/>
+                <Button Text="Zapisz" Command="{Binding SaveCommand}"/>
 
         </StackLayout>
         

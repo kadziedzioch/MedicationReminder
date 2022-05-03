@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MedicationReminder.Models
+namespace MedicationReminder.Web.Models
 {
-    class Medicine
+    public class MedicineBindingModel
     {
         public string MedicineId { get; set; }
         public string MedicineName { get; set; }
         public bool IsImmunosuppressive { get; set; }
-        
     }
 }

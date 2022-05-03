@@ -31,6 +31,8 @@ namespace MedicationReminder.Web
             services.AddDbContext<DatabaseContext>(options => 
             options.UseSqlServer("Server=LAPTOP-0HE9DEQH\\SQLEXPRESS;Database=MedicationReminderDatabase;Trusted_Connection=True;"));
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRemindTimeRepository, RemindTimeRepository>();
+            services.AddTransient<IMedicineRepository, MedicineRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

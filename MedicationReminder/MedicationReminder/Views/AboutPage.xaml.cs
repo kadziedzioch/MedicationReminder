@@ -21,6 +21,8 @@ namespace MedicationReminder.Views
         {
 
             Application.Current.Properties["IsUserLoggedIn"] = false;
+            Application.Current.Properties["CurrentUsername"] = "";
+            await Application.Current.SavePropertiesAsync();
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
 
         }
