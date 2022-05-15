@@ -90,9 +90,10 @@
     <FlyoutItem Title="Dodaj" Icon="pill.png">
         <ShellContent Route="AddReminderPage" ContentTemplate="{DataTemplate local:AddReminderPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Wszystkie" Icon="calendar.png">
+    <FlyoutItem Title="Wszystkie" Icon="calendar.png" >
         <ShellContent Route="TodayRemaindersPage" ContentTemplate="{DataTemplate local:TodayRemaindersPage}" />
     </FlyoutItem>
+   
 
     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
     

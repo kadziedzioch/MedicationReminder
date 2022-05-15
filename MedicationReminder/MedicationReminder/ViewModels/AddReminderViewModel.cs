@@ -22,6 +22,7 @@ namespace MedicationReminder.ViewModels
         public TimeSpan newTime { get; set; }
         public string newMedicineName { get; set; }
         public bool newIsImmunosupressive { get; set; }
+        public bool newIsSelected { get; set; }
 
         public AddReminderViewModel()
         {
@@ -32,6 +33,7 @@ namespace MedicationReminder.ViewModels
             SaveCommand = new Command(Save);
             newDose = 1;
             newTime = new TimeSpan(8, 0, 0);
+            newIsSelected = false;
         }
 
         private void AddRemindTime()
@@ -40,7 +42,8 @@ namespace MedicationReminder.ViewModels
             {
                 RemindTimeId = Guid.NewGuid().ToString(),
                 Dose = newDose,
-                Time = newTime 
+                Time = newTime,
+                IsSelected = false
             });
 
         }
@@ -102,7 +105,7 @@ namespace MedicationReminder.ViewModels
                     MedicineId = medicine.MedicineId,
                     Time = remindTime.Time.ToString(),
                     Dose = remindTime.Dose,
-                    IsSelected = false
+                    IsSelected = remindTime.IsSelected
 
                 });
 

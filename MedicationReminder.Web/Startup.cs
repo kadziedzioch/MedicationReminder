@@ -29,7 +29,7 @@ namespace MedicationReminder.Web
 
             services.AddControllersWithViews();
             services.AddDbContext<DatabaseContext>(options =>
-            options.UseSqlServer("Server=.;Database=MedicationReminderDatabase;Trusted_Connection=True;"));
+            options.UseSqlServer("Server=LAPTOP-0HE9DEQH\\SQLEXPRESS;Database=MedicationReminderDatabase;Trusted_Connection=True;"));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRemindTimeRepository, RemindTimeRepository>();
             services.AddTransient<IMedicineRepository, MedicineRepository>();

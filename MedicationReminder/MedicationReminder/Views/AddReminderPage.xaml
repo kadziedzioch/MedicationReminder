@@ -6,9 +6,9 @@
     <ContentPage.Content>
 
         <StackLayout>
-            <Entry FontSize="Medium" Placeholder="Nazwa leku" Text="{Binding newMedicineName,Mode=TwoWay}"/>
+            <Entry FontSize="Medium" Placeholder="Nazwa leku" Text="{Binding newMedicineName}"/>
             <StackLayout Orientation="Horizontal">
-                <CheckBox x:Name="checkBox" IsChecked="{Binding newIsImmunosupressive, Mode=TwoWay}"/>
+                <CheckBox x:Name="checkBox" IsChecked="{Binding newIsImmunosupressive}"/>
                 <Label Text="Czy jest to lek immunosupresyjny?" FontSize="Medium"/>
             </StackLayout>
             <Label HorizontalTextAlignment="Center" IsVisible="False"
@@ -40,7 +40,7 @@
                                 <Button Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference MyList}}" CommandParameter="{Binding .}" Text="x" BackgroundColor="pink" TextColor="Gray" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="Center" FontSize="Medium"/>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
-                                <CheckBox IsVisible="false">
+                                <CheckBox IsVisible="false" IsChecked="{Binding IsSelected}">
                                     <CheckBox.Triggers>
                                         <DataTrigger TargetType="CheckBox"
                                                      Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}"

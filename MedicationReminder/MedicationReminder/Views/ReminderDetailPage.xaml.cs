@@ -11,19 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace MedicationReminder.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TodayRemaindersPage : ContentPage
+    public partial class ReminderDetailPage : ContentPage
     {
-        TodayRemaindersViewModel _viewModel;
-        public TodayRemaindersPage()
+        public ReminderDetailPage()
         {
             InitializeComponent();
-            BindingContext = _viewModel = new TodayRemaindersViewModel();
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.OnAppearing();
+            BindingContext = new ReminderDetailViewModel();
         }
     }
 }

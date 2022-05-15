@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:MedicationReminder.ViewModels" xmlns:model="clr-namespace:MedicationReminder.Models" x:DataType="viewmodels:ReminderDetailViewModel"
+             x:Class="MedicationReminder.Views.ReminderDetailPage">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding MedicineName, Mode=TwoWay}" FontSize="Large" HorizontalTextAlignment="Center" Margin="5"/>
+            <CollectionView ItemsSource="{Binding RemindTimes}"
+                            SelectionMode="None"
+                            Margin="5,10,5,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Margin="10">
+                            <Frame CornerRadius="15"
+                                   Padding="15"
+                                   BorderColor="gray">
+                                <StackLayout x:DataType="model:RemindTime"
+                                     Orientation="Vertical">
+                                    
+                                    <StackLayout Orientation="Horizontal">
+                                    <Label Text="Dawka:" FontSize="Medium"/>
+                                    <Label Text="{Binding Dose}" FontSize="Medium"/>
+                                    <Label Text="tabletka" FontSize="Medium"/>
+                                    </StackLayout>
+                                    
+                                    <StackLayout Orientation="Horizontal">
+                                    <Label Text="Godzina przypomnienia" FontSize="Medium"/>
+                                    <Label Text="{Binding Time}" FontSize="Medium"/>
+
+                                    
+                                        
+                                </StackLayout>
+                            </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
