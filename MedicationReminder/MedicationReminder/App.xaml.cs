@@ -1,5 +1,4 @@
-﻿using MedicationReminder.Services;
-using MedicationReminder.Views;
+﻿using MedicationReminder.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,9 +12,7 @@ namespace MedicationReminder
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
-            //MainPage = new NavigationPage(new Views.LoginPage());
 
         }
 
