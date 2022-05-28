@@ -93,7 +93,7 @@ namespace MedicationReminder.Web.Controllers
             {
                 return BadRequest();
             }
-            var medicinesId = remindTimeRepository.GetAllRemindTimes().Where(x => x.UserId == userId).Select(x => x.MedicineId).ToList();
+            var medicinesId = remindTimeRepository.GetAllRemindTimes().Where(x => x.UserId == userId).Select(x => x.MedicineId).Distinct().ToList();
             if(medicinesId == null)
             {
                 return BadRequest();

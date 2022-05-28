@@ -1,6 +1,7 @@
 ﻿using MedicationReminder.Models;
 using MedicationReminder.Views;
 using Newtonsoft.Json;
+using Plugin.LocalNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -63,6 +64,7 @@ namespace MedicationReminder.ViewModels
                     {
                         Medicines.Add(medicine);
                     }
+
                 }
                 
             }
@@ -112,6 +114,13 @@ namespace MedicationReminder.ViewModels
                     {
                         Medicines.Remove(medicine);
                     }
+                }
+                string username = Application.Current.Properties["CurrentUsername"].ToString();
+                var list = NotificationCenter.Current.GetPendingNotificationList().Result.Where(x => x.Title == content.MedicineName && x.Subtitle == username);
+
+                foreach (var item in list)
+                {
+                    NotificationCenter.Current.Cancel(item.NotificationId);
                 }
             }
             

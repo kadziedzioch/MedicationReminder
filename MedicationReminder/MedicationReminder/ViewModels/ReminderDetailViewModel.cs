@@ -18,7 +18,7 @@ namespace MedicationReminder.ViewModels
         private string medicineId;
 
         public string Id { get; set; }
-        public string MedicineName { get; set; }
+        public string MedicineName { get; set; } = "";
 
         public ReminderDetailViewModel()
         {
@@ -53,6 +53,7 @@ namespace MedicationReminder.ViewModels
                 string UserId = Application.Current.Properties["CurrentUsername"].ToString();
                 var response = await client.GetAsync("http://10.0.2.2:9481/api/reminder/GetUsersRemindTimes?userName=" + UserId);
 
+                
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -72,15 +73,13 @@ namespace MedicationReminder.ViewModels
                         });
                     }
                 }
-
                 var response2 = await client.GetAsync("http://10.0.2.2:9481/api/reminder/GetMedicineName?medicineId=" + medicineId);
 
                 if (response2.IsSuccessStatusCode)
                 {
                     MedicineName = await response2.Content.ReadAsStringAsync();
-                    Debug.WriteLine("cos");
+                    OnPropertyChanged(nameof(MedicineName));
                 }
-                
 
             }
             catch (Exception)

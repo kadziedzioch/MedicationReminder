@@ -1,8 +1,11 @@
 ﻿using MedicationReminder.Models;
 using MedicationReminder.Views;
 using Newtonsoft.Json;
+using Plugin.LocalNotification;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +44,8 @@ namespace MedicationReminder.ViewModels
                 }
                 Application.Current.Properties["CurrentUsername"] = user.Username;
                 await Application.Current.SavePropertiesAsync();
+
+                await CreateRemindTimes();
                 
                 newUsername = string.Empty;
                 newPassword = string.Empty;
@@ -48,6 +53,9 @@ namespace MedicationReminder.ViewModels
                 OnPropertyChanged(nameof(newUsername));
                 OnPropertyChanged(nameof(newPassword));
                 OnPropertyChanged(nameof(newLoginFaild));
+
+
+
 
                 await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
             }
@@ -79,6 +87,71 @@ namespace MedicationReminder.ViewModels
                 return false;
             }
             return true;
+        }
+
+        private async Task CreateRemindTimes()
+        {
+            HttpClientHandler insecureHandler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            HttpClient client = new HttpClient(insecureHandler);
+
+            string UserId = Application.Current.Properties["CurrentUsername"].ToString();
+            var medicinesFromDb = await client.GetAsync("http://10.0.2.2:9481/api/reminder/GetUsersMedicines?userName=" + UserId);
+            var remindTimesFromDb = await client.GetAsync("http://10.0.2.2:9481/api/reminder/GetUsersRemindTimes?userName=" + UserId);
+
+            var firstcontent = await medicinesFromDb.Content.ReadAsStringAsync();
+            var medicines = JsonConvert.DeserializeObject<ObservableCollection<Medicine>>(firstcontent);
+
+            var secondcontent = await remindTimesFromDb.Content.ReadAsStringAsync();
+            var remindTimes = JsonConvert.DeserializeObject<ObservableCollection<RemindTimeToDatabase>>(secondcontent);
+
+            DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            foreach (var item in remindTimes)
+            {
+                Random rnd = new Random();
+                string medicineName = medicines.Where(x => x.MedicineId == item.MedicineId).Select(x => x.MedicineName).FirstOrDefault();
+                TimeSpan time = TimeSpan.Parse(item.Time);
+                var notification = new NotificationRequest
+                {
+                    BadgeNumber = 1,
+                    Description = "Przypomnienie o leku: " + medicineName + ", dawka to: " + item.Dose + " tabletka",
+                    Title = medicineName,
+                    Schedule =
+                    {
+                        NotifyTime = dt + time,
+                        NotifyRepeatInterval = new TimeSpan(24, 0, 0),
+                        RepeatType = NotificationRepeat.TimeInterval
+                    },
+                    NotificationId = rnd.Next(),
+                    Subtitle = Application.Current.Properties["CurrentUsername"].ToString()
+                };
+                await NotificationCenter.Current.Show(notification);
+
+
+                if (item.IsSelected)
+                {
+                    var notification2 = new NotificationRequest
+                    {
+                        BadgeNumber = 1,
+                        Description = "Pamiętaj o pozostaniu na czczo przez kolejne 2 godziny!",
+                        Title = medicineName,
+                        Schedule =
+                        {
+                            NotifyTime = dt + new TimeSpan(time.Hours-2,time.Minutes, time.Seconds),
+                            NotifyRepeatInterval = new TimeSpan(24,0,0),
+                            RepeatType = NotificationRepeat.TimeInterval
+                        },
+                        NotificationId = rnd.Next(),
+                        Subtitle = Application.Current.Properties["CurrentUsername"].ToString()
+
+                    };
+                    await NotificationCenter.Current.Show(notification2);
+                }
+            }
+
+
         }
 
     }

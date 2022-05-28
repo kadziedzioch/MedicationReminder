@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Plugin.LocalNotification;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -21,9 +23,21 @@ namespace MedicationReminder.Views
         {
 
             Application.Current.Properties["IsUserLoggedIn"] = false;
+            string username = Application.Current.Properties["CurrentUsername"].ToString();
             Application.Current.Properties["CurrentUsername"] = "";
+            Application.Current.MainPage = new AppShell();
             await Application.Current.SavePropertiesAsync();
+
+            var list = NotificationCenter.Current.GetPendingNotificationList().Result.Where(x => x.Subtitle == username);
+
+            foreach (var item in list)
+            {
+                NotificationCenter.Current.Cancel(item.NotificationId);
+            }
+
+            
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            
 
         }
     }

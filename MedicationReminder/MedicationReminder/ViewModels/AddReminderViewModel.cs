@@ -1,9 +1,12 @@
 ﻿using MedicationReminder.Models;
 using MedicationReminder.Views;
 using Newtonsoft.Json;
+using Plugin.LocalNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,9 +97,46 @@ namespace MedicationReminder.ViewModels
             var responseMedicine = await client.PostAsync("http://10.0.2.2:9481/api/reminder/savemedicine", contentMedicine).ConfigureAwait(false);
 
             bool remindResponse = false;
-            
+            DateTime dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             foreach (var remindTime in RemindTimes)
             {
+                Random rnd = new Random();
+                var notification = new NotificationRequest
+                {
+                    BadgeNumber = 1,
+                    Description = "Przypomnienie o leku: " + medicine.MedicineName + ", dawka to: " + remindTime.Dose + " tabletka",
+                    Title = medicine.MedicineName,
+                    Schedule =
+                    {
+                        NotifyTime = dt + remindTime.Time,
+                        NotifyRepeatInterval = new TimeSpan(24, 0, 0),
+                        RepeatType = NotificationRepeat.TimeInterval
+                    },
+                    NotificationId = rnd.Next(),
+                    Subtitle = Application.Current.Properties["CurrentUsername"].ToString()
+                };
+                await NotificationCenter.Current.Show(notification);
+
+
+                if (remindTime.IsSelected)
+                {
+                    var notification2 = new NotificationRequest
+                    {
+                        BadgeNumber = 1,
+                        Description = "Pamiętaj o pozostaniu na czczo przez kolejne 2 godziny!",
+                        Title = medicine.MedicineName,
+                        Schedule =
+                        {
+                            NotifyTime = dt + new TimeSpan(remindTime.Time.Hours-2,remindTime.Time.Minutes, remindTime.Time.Seconds),
+                            NotifyRepeatInterval = new TimeSpan(24,0,0),
+                            RepeatType = NotificationRepeat.TimeInterval
+                        },
+                        NotificationId = rnd.Next(),
+                        Subtitle = Application.Current.Properties["CurrentUsername"].ToString()
+
+                    };
+                    await NotificationCenter.Current.Show(notification2);
+                }
 
                 var jsonRemindTime = JsonConvert.SerializeObject(new RemindTimeToDatabase
                 {
@@ -121,6 +161,7 @@ namespace MedicationReminder.ViewModels
                     remindResponse = false;
                     break;
                 }
+
             }
 
             return remindResponse;
